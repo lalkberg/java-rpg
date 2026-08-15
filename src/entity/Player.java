@@ -35,14 +35,17 @@ public class Player extends Entity
             up1 =   ImageIO.read(getClass().getResourceAsStream("/player/character_u_0.png"));
             up2 =   ImageIO.read(getClass().getResourceAsStream("/player/character_u_1.png"));
             up3 =   ImageIO.read(getClass().getResourceAsStream("/player/character_u_2.png"));
+            // down1 = ImageIO.read(getClass().getResourceAsStream("/player/character_d_0.png"));
             down1 = ImageIO.read(getClass().getResourceAsStream("/player/character_d_0.png"));
             down2 = ImageIO.read(getClass().getResourceAsStream("/player/character_d_1.png"));
             down3 = ImageIO.read(getClass().getResourceAsStream("/player/character_d_2.png"));
             left1 = ImageIO.read(getClass().getResourceAsStream("/player/character_l_0.png"));
             left2 = ImageIO.read(getClass().getResourceAsStream("/player/character_l_1.png"));
             left3 = ImageIO.read(getClass().getResourceAsStream("/player/character_l_2.png"));
-        } catch (IOException e) 
+        }
+        catch (IOException e) 
         {
+            e.printStackTrace();
         }
     }
 

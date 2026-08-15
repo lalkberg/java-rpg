@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{  // Extends = inherits, implements = interfaces
 
@@ -24,6 +25,7 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
     // FPS
     int FPS = 60;
     
+    TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;  // Thread class is used to repeat logic, like carrying a game loop
     Player player = new Player(this, keyH);
@@ -141,6 +143,7 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
         // cast Graphics to Graphics2D to get 2D control
         Graphics2D g2 = (Graphics2D)g;
 
+        tileM.draw(g2);
         player.draw(g2);
 
         g2.dispose();   // good practice to dispose, this isn't C# baby
