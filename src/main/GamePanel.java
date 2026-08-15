@@ -1,5 +1,6 @@
 package main;
 
+import entity.Player;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,7 +13,7 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
     final int originalTileSize = 16; // 16x16 tile size, default size of everything
     final int scale = 3; // 3x scale on entire screen
 
-    final int tileSize = originalTileSize * scale; // 48x48 tile
+    public final int tileSize = originalTileSize * scale; // 48x48 tile
 
     // 4:3 resolution
     final int maxScreenCol = 16;
@@ -25,11 +26,7 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
     
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;  // Thread class is used to repeat logic, like carrying a game loop
-
-    // Set player's default position
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    Player player = new Player(this, keyH);
 
     public GamePanel()
     {
@@ -98,7 +95,7 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
-        int drawCount = 0;
+        // int drawCount = 0;
 
         while (gameThread != null)
         {
@@ -118,14 +115,14 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
                 // 2. draw: draw the screen with the updated information
                 repaint();  // kind of confusing but this is how paintComponent is called
                 delta--;
-                drawCount++;
+                // drawCount++;
 
             }
 
             if (timer >= 1000000000)
             {
-                System.out.println("FPS: " + drawCount);
-                drawCount = 0;
+                // System.out.println("FPS: " + drawCount);
+                // drawCount = 0;
                 timer = 0;
             }
         }
@@ -133,23 +130,7 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
 
     public void update()
     {
-        if (keyH.upPressed == true)
-        {
-            playerY -= playerSpeed;
-        }
-        else if (keyH.downPressed == true)
-        {
-            playerY += playerSpeed;
-        }
-        else if (keyH.leftPressed == true)
-        {
-            playerX -= playerSpeed;
-        }
-        else if (keyH.rightPressed == true)
-        {
-            playerX += playerSpeed;
-        }
-
+        player.update();
     }
 
     @Override
@@ -160,8 +141,8 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
         // cast Graphics to Graphics2D to get 2D control
         Graphics2D g2 = (Graphics2D)g;
 
-        g2.setColor(Color.white);
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        player.draw(g2);
+
         g2.dispose();   // good practice to dispose, this isn't C# baby
     }
 }
