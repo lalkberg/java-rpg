@@ -17,10 +17,16 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
     public final int tileSize = originalTileSize * scale; // 48x48 tile
 
     // 4:3 resolution
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol;    // 768px
-    public final int screenHeight = tileSize * maxScreenRow;   // 576px'
+    public final int maxScreenCol   = 16;
+    public final int maxScreenRow   = 12;
+    public final int screenWidth    = tileSize * maxScreenCol;    // 768px
+    public final int screenHeight   = tileSize * maxScreenRow;   // 576px'
+
+    // world settings
+    public final int maxWorldCol    = 30;
+    public final int maxWorldRow    = 20;
+    public final int worldWidth     = tileSize * maxWorldCol;
+    public final int worldHeight    = tileSize * maxWorldRow;
 
     // FPS
     int FPS = 60;
@@ -28,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;  // Thread class is used to repeat logic, like carrying a game loop
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
 
     public GamePanel()
     {
