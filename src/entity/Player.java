@@ -59,7 +59,7 @@ public class Player extends Entity
             if (spriteCounter > 5) // 5 = 12 fps. maybe should be determined elsewhere but works for now
             {
                 spriteNum = ((spriteNum) % 4) + 1;
-                System.out.println(spriteNum);
+                // System.out.println(spriteNum);
                 spriteCounter = 0;
             }
         }
