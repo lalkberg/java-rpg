@@ -8,11 +8,11 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import main.GamePanel;
 
-public class TileManager 
+public class TileManager
 {
     GamePanel gp;
-    Tile[] tile; // contains all the different tile types
-    int mapTileNumber[][];  // value typed arrays are different?
+    public Tile[] tile; // contains all the different tile types
+    public int mapTileNumber[][]; // value typed arrays are different?
 
     public TileManager(GamePanel gp)
     {
@@ -20,17 +20,17 @@ public class TileManager
         tile = new Tile[10];
         mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        //loadMap("/maps/map01.txt");
+        // loadMap("/maps/map01.txt");
         loadMap("/maps/map02.csv");
     }
 
     public void getTileImage()
     {
-        try 
+        try
         {
             tile[0] = new Tile();
             tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tile_dirt_0.png"));
-            //tile[0].image = ImageIO.read(new File("./res/tiles/tile_dirt_0.png"));
+            // tile[0].image = ImageIO.read(new File("./res/tiles/tile_dirt_0.png"));
 
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tile_grass_0.png"));
@@ -43,22 +43,27 @@ public class TileManager
 
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tile_tree_0.png"));
+            tile[4].collision = true;
 
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tile_tree_1.png"));
+            tile[5].collision = true;
 
             tile[6] = new Tile();
             tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tile_tree_2.png"));
-        } 
-        catch (IOException e) 
+            tile[6].collision = true;
+        } catch (IOException e)
         {
             e.printStackTrace();
         }
     }
+
     public void loadMap(String filePath)
     {
-        try {
-            InputStream is = getClass().getResourceAsStream(filePath); // why does this work but not reading tiles like normal??
+        try
+        {
+            InputStream is = getClass().getResourceAsStream(filePath); // why does this work but not reading tiles like
+                                                                       // normal??
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int col = 0;
@@ -66,7 +71,7 @@ public class TileManager
             while (col < gp.maxWorldCol && row < gp.maxWorldRow)
             {
                 String line = br.readLine();
-                while(col < gp.maxWorldCol)
+                while (col < gp.maxWorldCol)
                 {
                     String numbers[] = line.split("[,\\s]\\s*");
                     int num = Integer.parseInt(numbers[col]);
@@ -80,15 +85,16 @@ public class TileManager
                 }
             }
             br.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e)
+        {
         }
     }
+
     public void draw(Graphics2D g2)
     {
-        //g2.drawImage(tile[0].image, 0, 0, gp.tileSize, gp.tileSize, null);
-        //g2.drawImage(tile[1].image, 48, 0, gp.tileSize, gp.tileSize, null);
-        //g2.drawImage(tile[2].image, 96, 0, gp.tileSize, gp.tileSize, null);
+        // g2.drawImage(tile[0].image, 0, 0, gp.tileSize, gp.tileSize, null);
+        // g2.drawImage(tile[1].image, 48, 0, gp.tileSize, gp.tileSize, null);
+        // g2.drawImage(tile[2].image, 96, 0, gp.tileSize, gp.tileSize, null);
 
         // int col = 0;
         // int row = 0;
@@ -97,6 +103,7 @@ public class TileManager
         // int x = 0;
         // int y = 0;
 
+        // camera loop
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow)
         {
             int tileNum = mapTileNumber[worldCol][worldRow];
@@ -106,10 +113,10 @@ public class TileManager
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY)
+            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX
+                    && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX
+                    && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
+                    && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY)
             {
                 g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
@@ -119,7 +126,7 @@ public class TileManager
             {
                 worldCol = 0;
                 // x = 0;
-                worldRow ++;
+                worldRow++;
                 // y += gp.tileSize;
             }
         }

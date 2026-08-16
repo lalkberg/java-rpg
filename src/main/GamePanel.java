@@ -8,32 +8,34 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import tile.TileManager;
 
-public class GamePanel extends JPanel implements Runnable{  // Extends = inherits, implements = interfaces
+public class GamePanel extends JPanel implements Runnable
+{ // Extends = inherits, implements = interfaces
 
     // screen settings
     final int originalTileSize = 16; // 16x16 tile size, default size of everything
-    final int scale = 3; // 3x scale on entire screen
+    public final int scale = 3; // 3x scale on entire screen
 
     public final int tileSize = originalTileSize * scale; // 48x48 tile
 
     // 4:3 resolution
-    public final int maxScreenCol   = 16;
-    public final int maxScreenRow   = 12;
-    public final int screenWidth    = tileSize * maxScreenCol;    // 768px
-    public final int screenHeight   = tileSize * maxScreenRow;   // 576px'
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
+    public final int screenWidth = tileSize * maxScreenCol; // 768px
+    public final int screenHeight = tileSize * maxScreenRow; // 576px'
 
     // world settings
-    public final int maxWorldCol    = 30;
-    public final int maxWorldRow    = 20;
-    public final int worldWidth     = tileSize * maxWorldCol;
-    public final int worldHeight    = tileSize * maxWorldRow;
+    public final int maxWorldCol = 30;
+    public final int maxWorldRow = 20;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     // FPS
     int FPS = 60;
-    
+
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
-    Thread gameThread;  // Thread class is used to repeat logic, like carrying a game loop
+    Thread gameThread; // Thread class is used to repeat logic, like carrying a game loop
+    public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyH);
 
     public GamePanel()
@@ -52,51 +54,37 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
         gameThread.start();
     }
 
-    /* 
-    @Override   // @Override is like override void
-    public void run() 
-    {
-        double drawInterval = 1000000000 / FPS; // 0.0166666... seconds
-        double nextDrawTime = System.nanoTime() + drawInterval;
-
-        while (gameThread != null)
-        {
-            // Sleep method of game loop
-
-            // game loop goes here
-            System.out.println("Game is running."); // System.out.println = print line method
-
-            // 1. update: update information such as character position
-            update();
-
-            // 2. draw: draw the screen with the updated information
-            repaint();  // kind of confusing but this is how paintComponent is called
-
-            
-            try 
-            {
-                double remainingTime = nextDrawTime - System.nanoTime();
-                remainingTime = remainingTime / 1000000;    // sleep takes in milliseconds, need to divide by 1 million
-
-                if (remainingTime < 0) 
-                {
-                    remainingTime = 0;
-                }
-
-                Thread.sleep((long)remainingTime);
-
-                nextDrawTime += drawInterval;
-            } catch (InterruptedException e) 
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-    */
+    /*
+     * @Override // @Override is like override void public void run() { double
+     * drawInterval = 1000000000 / FPS; // 0.0166666... seconds double nextDrawTime
+     * = System.nanoTime() + drawInterval;
+     * 
+     * while (gameThread != null) { // Sleep method of game loop
+     * 
+     * // game loop goes here System.out.println("Game is running."); //
+     * System.out.println = print line method
+     * 
+     * // 1. update: update information such as character position update();
+     * 
+     * // 2. draw: draw the screen with the updated information repaint(); // kind
+     * of confusing but this is how paintComponent is called
+     * 
+     * 
+     * try { double remainingTime = nextDrawTime - System.nanoTime(); remainingTime
+     * = remainingTime / 1000000; // sleep takes in milliseconds, need to divide by
+     * 1 million
+     * 
+     * if (remainingTime < 0) { remainingTime = 0; }
+     * 
+     * Thread.sleep((long)remainingTime);
+     * 
+     * nextDrawTime += drawInterval; } catch (InterruptedException e) {
+     * e.printStackTrace(); } } }
+     */
 
     // run with delta time instead of sleep, prefer this one
-    @Override   // @Override is like override void
-    public void run() 
+    @Override // @Override is like override void
+    public void run()
     {
         double drawInterval = 1000000000 / FPS; // 0.0166666... seconds
         double delta = 0;
@@ -112,16 +100,17 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
-            if (delta >= 1) 
+            if (delta >= 1)
             {
-                                // game loop goes here
-                // System.out.println("Game is running."); // System.out.println = print line method
+                // game loop goes here
+                // System.out.println("Game is running."); // System.out.println = print line
+                // method
 
                 // 1. update: update information such as character position
                 update();
 
                 // 2. draw: draw the screen with the updated information
-                repaint();  // kind of confusing but this is how paintComponent is called
+                repaint(); // kind of confusing but this is how paintComponent is called
                 delta--;
                 // drawCount++;
 
@@ -142,16 +131,16 @@ public class GamePanel extends JPanel implements Runnable{  // Extends = inherit
     }
 
     @Override
-    public void paintComponent(Graphics g)    // built in java function
+    public void paintComponent(Graphics g) // built in java function
     {
         super.paintComponent(g);
 
         // cast Graphics to Graphics2D to get 2D control
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
 
         tileM.draw(g2);
         player.draw(g2);
 
-        g2.dispose();   // good practice to dispose, this isn't C# baby
+        g2.dispose(); // good practice to dispose, this isn't C# baby
     }
 }
