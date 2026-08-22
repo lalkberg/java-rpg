@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
+import object.SuperObject;
 
 public class Player extends Entity
 {
@@ -16,6 +17,7 @@ public class Player extends Entity
 
     public final int screenX;
     public final int screenY;
+    int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH)
     {
@@ -31,6 +33,8 @@ public class Player extends Entity
         // somewhere
         solidArea.x = 4 * scale;
         solidArea.y = 8 * scale;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         solidArea.width = 8 * scale;
         solidArea.height = 7 * scale;
 
@@ -90,6 +94,10 @@ public class Player extends Entity
         collisionOn = false;
         gp.cChecker.checkTile(this);
 
+        // check object collision
+        int objIndex = gp.cChecker.checkObject(this, true);
+        pickUpObject(objIndex);
+
         // check if player has any input before animating
         if (movementInput)
         {
@@ -125,6 +133,50 @@ public class Player extends Entity
         {
             spriteNum = 1;
             spriteCounter = 0;
+        }
+    }
+
+    public void pickUpObject(int i)
+    {
+        if (i != -1) // -1 means we're not touching anything
+        {
+            SuperObject object = gp.obj[i];
+            String objectName = object.name;
+
+            switch (objectName)
+            {
+            case "Key":
+                hasKey++;
+
+                // NOTE: the weirdness here is probably moot anyway since all collision handling
+                // of an object should be handled by the object itself, not the player
+
+                // null object reference
+                // object = null; // does nothing?
+                // System.err.println("Is interacted object null?" + gp.obj[i] == null);
+                // null source object
+                gp.obj[i] = null;
+                // System.err.println("Is interacted object null?" + gp.obj[i] == null);
+                System.out.println("Keys held: " + hasKey);
+                break;
+            case "Chest":
+                if (hasKey > 0)
+                {
+                    hasKey--;
+                    gp.obj[i] = null;
+                    System.out.println("Keys held: " + hasKey);
+                }
+                break;
+            case "Sword":
+                // doesn't make much sense to increase speed with sword but here we are
+                speed += 2;
+                gp.obj[i] = null;
+                break;
+            default:
+                throw new AssertionError();
+            }
+
+            // gp.obj[i] = null; // destroys the object
         }
     }
 

@@ -16,5 +16,6 @@ public class Entity // base class for all player characters, npcs, monsters, etc
     public int spriteNum = 1;
 
     public Rectangle solidArea;
+    public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
 }

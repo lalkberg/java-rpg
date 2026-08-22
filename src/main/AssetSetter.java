@@ -2,6 +2,7 @@ package main;
 
 import object.OBJ_Chest;
 import object.OBJ_Key;
+import object.OBJ_Sword;
 
 public class AssetSetter
 {
@@ -25,5 +26,9 @@ public class AssetSetter
         gp.obj[2] = new OBJ_Chest();
         gp.obj[2].worldX = 13 * gp.tileSize;
         gp.obj[2].worldY = 8 * gp.tileSize;
+
+        gp.obj[3] = new OBJ_Sword();
+        gp.obj[3].worldX = 24 * gp.tileSize;
+        gp.obj[3].worldY = 5 * gp.tileSize;
     }
 }
