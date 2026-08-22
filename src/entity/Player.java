@@ -17,7 +17,7 @@ public class Player extends Entity
 
     public final int screenX;
     public final int screenY;
-    int hasKey = 0;
+    public int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH)
     {
@@ -155,25 +155,37 @@ public class Player extends Entity
                 // object = null; // does nothing?
                 // System.err.println("Is interacted object null?" + gp.obj[i] == null);
                 // null source object
+                gp.playSE(1);
                 gp.obj[i] = null;
                 // System.err.println("Is interacted object null?" + gp.obj[i] == null);
-                System.out.println("Keys held: " + hasKey);
+                // System.out.println("Keys held: " + hasKey);
+                gp.ui.showMessage("You got a Key!");
                 break;
-            case "Chest":
+            case "Door":
                 if (hasKey > 0)
                 {
                     hasKey--;
+                    gp.playSE(3);
                     gp.obj[i] = null;
-                    System.out.println("Keys held: " + hasKey);
+                    // System.out.println("Keys held: " + hasKey);
+                    gp.ui.showMessage("You opened a door!");
+                } else
+                {
+                    gp.ui.showMessage("You need a Key to open doors!");
                 }
                 break;
             case "Sword":
                 // doesn't make much sense to increase speed with sword but here we are
                 speed += 2;
+                gp.playSE(2);
                 gp.obj[i] = null;
+                gp.ui.showMessage("Speed up!");
                 break;
-            default:
-                throw new AssertionError();
+            case "Chest":
+                gp.ui.gameFinished = true;
+                gp.stopMusic();
+                gp.playSE(4);
+                break;
             }
 
             // gp.obj[i] = null; // destroys the object

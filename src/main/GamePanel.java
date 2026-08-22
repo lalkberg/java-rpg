@@ -35,9 +35,14 @@ public class GamePanel extends JPanel implements Runnable
 
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
-    Thread gameThread; // Thread class is used to repeat logic, like carrying a game loop
+    Sound music = new Sound();
+    Sound SE = new Sound();
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
+    Thread gameThread; // Thread class is used to repeat logic, like carrying a game loop
+
+    // entity and object
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
 
@@ -53,6 +58,7 @@ public class GamePanel extends JPanel implements Runnable
     public void setupGame()
     {
         aSetter.setObject();
+        playMusic(0);
     }
 
     public void startGameThread()
@@ -160,7 +166,26 @@ public class GamePanel extends JPanel implements Runnable
 
         // player
         player.draw(g2);
-
+        // UI
+        ui.draw(g2);
         g2.dispose(); // good practice to dispose, this isn't C# baby
+    }
+
+    public void playMusic(int i)
+    {
+        music.setFile(i);
+        music.play();
+        music.loop();
+    }
+
+    public void stopMusic()
+    {
+        music.stop();
+    }
+
+    public void playSE(int i)
+    {
+        SE.setFile(i);
+        SE.play();
     }
 }
